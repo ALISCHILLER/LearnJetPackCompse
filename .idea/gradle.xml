@@ -12,10 +12,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/basiccomposables" />
             <option value="$PROJECT_DIR$/calculator" />
             <option value="$PROJECT_DIR$/learntheme" />
             <option value="$PROJECT_DIR$/questionnaire" />
             <option value="$PROJECT_DIR$/scrollablelist" />
+            <option value="$PROJECT_DIR$/statelearn" />
           </set>
         </option>
       </GradleProjectSettings>

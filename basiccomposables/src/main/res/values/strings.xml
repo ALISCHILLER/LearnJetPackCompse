@@ -1,0 +1,152 @@
+<resources>
+    <string name="app_name">Basic Composables</string>
+
+    <string name="txtScroll">اگر IOException را در یکی از job-های child صادر کنیم، همه job-های مرتبط cancel خواهند شد:
+
+
+یک parent می‌تواند همه child های خود را بدون cancel کردن خودش، cancel کند. برای اینکار باید از فانگشن ()job.cancelChildren استفاده شود. توجه کنید که اگر یک job لغو شود، نمی‌تواند به عنوان یک job والد برای اجرای مجدد کوروتین مورد استفاده قرار گیرد.
+اگر از ()job.cancel استفاده کنیم، job والد شروع به cancel شدن می‌کند، یعنی وارد حالت Cancelling می‌شود. پس از اینکه همه job-های فرزند لغو شدند، job والد نیز خود را لغو می‌کند.
+
+
+اگر از ()job.cancelChildren استفاده کنیم، job والد همچنان active خواهد بود و همچنان می‌توانیم از آن برای اجرای کوروتین‌های دیگر بهره بگیریم:
+
+
+ا SupervisorJob
+اگر از یک job ساده به عنوان job والد استفاده کنیم، در صورت cancel شدن یکی از job های فرزند با exception به غیر از CancellationException، همه فرزندان cancel می‌شوند:
+
+
+اگر از ()SupervisorJob به عنوان job والد استفاده کنیم، شکست یک job فرزند تأثیری روی job-های فرزند دیگر نمی‌گذارد:
+
+
+ا Dispatchers
+یک Dispatcher مشخص می کند که این operation روی کدام thread باید انجام شود.
+
+در کوروتین Dispatcher همان schedulers در Rx هستند. در اندروید عمدتاً سه Dispatcher داریم:
+
+Dispatchers.Main
+Dispatchers.Default
+Dispatchers.IO
+که در ادامه توضیح هر کدام داده می‌شود.
+
+ا Dispatchers.Main
+این dispatcher امکان اجرای عملیات روی Main-Thread را فراهم می‌کند و میتواند به صورت مستقیم در داخل CoroutineContext یا از طریق MainScope Factory استفاده شود.
+
+اگر این dispatcher را جایی تعریف کنید که دسترسی به Main-Thread وجود نداشته باشد، با خطای IllegalStateException مواجه می‌شویم و به معنی آن است که دسترسی به Main-Thread در ClassPath جاری وجود ندارد.
+
+ا Dispatchers.Default
+این dispatcher برای کارهای سنگینی که نیازمند CPU هستند طراحی و بهینه سازی شده است و محدود به تعداد core های CPU است، به این معنی که فقط تعداد N تسک، که N = CPU CORE است، می‌تواند به صورت parallel در این dispatcher اجرا شود.
+
+ا Dispatchers.IO
+این نوع dispatcher برای کارهای سبک تر از جنس IO مانند Networking Operations یا Database Operation یا … که نیازمند یک Thread-Pool هستند استفاده می‌شود. Thread ها داخل این Pool بر حسب تقاضایی که می‌آید created و shut down می‌شوند.
+
+به صورت پیش فرض تعداد 64 عدد Thread در این dispatcher تعریف شده است، در نتیجه در این dispatcher نهایتا 64 عدد task به صورت parallel قابل اجراست.
+
+
+اگر هیچ dispatcher برای coroutine تعیین نشود، به صورت پیش فرض از این dispatcher یا به عبارتی از context مربوط به CoroutineScope یی که از آن launch شده استفاده می‌کند.
+
+ا withContext
+داخل یک Coroutine ما از withContext برای Switch کردن بین Dispatcher های مختلف استفاده می‌کنیم که یک suspend function است و یک CoroutineContext به عنوان پارامتر دریافت می‌کند و یک suspending block در اختیار ما قرار می‌دهد.
+
+شاید برای شما سوال بوجود بیاید که suspending block چیست؟ یعنی اینکه تا زمانی که complete نشده باشد در حالت suspend باقی می‌ماند و در نهایت یک مقدار به عنوان result برمیگرداند.
+
+ا CoroutineBuilder
+یک CoroutineBuilder یک extension function ساده است که به وسیله آن می‌توان یک coroutine را create و start کرد. از آنجایی که suspend function ها از داخل normal function ها قابل دسترسی نیستند، بنابراین CoroutineBuilder به عنوان پلی بین normal function و suspend function عمل می کند.
+
+لازم به ذکر است که CoroutineBuilder از نوع suspend function نیست، در نتیجه حتی در normal functions نیز می توان به آنها دسترسی داشت.
+
+ایجاد یک Coroutine بسیار ساده است. برای پیاده سازی آن باید از یکی از روش های زیر استفاده کرد:
+
+launch
+async
+runBlocking
+در ادامه هر یک از این روش ها را توضیح خواهیم داد.
+
+ا launch
+ساده ترین روش برای ساخت یک coroutine فراخوانی launch builder بر روی یک scope مشخص است که یک coroutine جدید را بدون block کردن thread جاری launch می‌کند و یک reference به job یی که به آن متصل شده است برمی‌گرداند. هیچ مقدار برگشتی ندارد و برای سناریوهایی که به اصطلاح “fire and forget” هستند مورداستفاده قرار میگیرد. یعنی جایی که ما میخواهیم یک task را روی یک thread جدید اجرا کنیم و نتیجه کار برایمان اهمیتی ندارد.
+
+
+ا async
+با async builder ما میتوانیم یک coroutine جدید بسازیم و با فراخوانی await که یک suspend function است منتظر نتیجه کار باشیم. مقدار برگشتی این نوع builder از جنس deferred است، یک چیزی شبیه به future در Java یا promise در JavaScript.
+
+ما نمی‌توانیم از async در یک normal function استفاده کنیم، زیرا برای دریافت result باید suspend function یی به نام await را call کند. بنابراین ما معمولاً از launch builder در داخل یک normal function استفاده می کنیم و سپس از async در داخل آن استفاده می کنیم.
+
+شاید سوال پیش بیاید که چه زمانی از async استفاده کنیم؟
+
+ما معمولاً از async فقط زمانی استفاده می‌کنیم که نیاز به اجرای موازی (parallel execution) برای tasks مختلف داشته باشیم زیرا منتظر می‌ماند تا همه task ها کامل شوند و deferred result را برمی‌گرداند.
+
+
+با توجه به دانش بدست آمده از async builder، ترتیب عبارات چاپ شده را حدس بزنید:
+
+
+خروجی کد به این صورت است:
+
+
+با توجه به اینکه اجرای این دو task به صورت parallel انجام می‌شود، نه یکی پس از دیگری، در نتیجه منتظر می‌ماند تا همه task ها complete شوند. زمان تمام شدن زمانی است که یک task سنگین‌تر برای تکمیل شدن طول می‌کشد. در function دوم با توجه به delay که وجود دارد، ۳ ثانیه طول می‌کشد تا جواب آماده شود و ارسال شود.
+
+ا runBlocking
+مکانیزم runBlocking به این صورت است که thread فعلی که coroutine در آن فراخوانی شده است را block می کند تا زمانی که coroutine کامل شود. runBlocking کدش را در همان thread یی که در آن فراخوانی شده است اجرا میکند.
+
+با توجه به تعاریف، ترتیب print ها به چه صورت است؟
+
+
+خروجی به این صورت است:
+
+
+ابتدا runBlocking میاد thread فعلی را block می‌کند و اجازه اجرا شدن خط بعدی را نمی‌دهد و به این ترتیب، کد داخل runBlocking علیرغم delay که دارد با اولویت بیشتری نسبت به خط بعد آن که بیرون از block هست اجرا می‌شود.
+
+مثال دیگری از await و مقایسه آن با launch:
+
+کد زیر یک فراخوانی sequential (پشت سر هم) از دو suspend function را نشان می‌دهد. در این کد برخی وظایف زمان‌بر را اجرا کرده‌ایم که در هر دو مورد ()fetchDataFromServerOne و ()fetchDataFromServerTwo یک ثانیه طول می‌کشد. سپس آن‌ها را در سازنده launch فرامی‌خوانیم. هزینه زمان نهایی برابر با مجموع هزینه زمانی 2 ثانیه خواهد بود.
+
+
+این اجرا تا زمانی که ()fetchDataFromServerOne پایان نیافته suspend می‌شود و سپس ()fetchDataFromServerTwo را اجرا می‌کند.
+
+و خروجی به صورت زیر خواهد بود:
+
+
+اگر بخواهیم هر دو function را به صورت parallel (همزمان) اجرا کنیم تا هزینه زمانی را کاهش دهیم، می‌توانیم از await استفاده کنیم. async کاملاً شبیه به launch است. یک کوروتین دیگر آغاز می‌کند که به صورت همزمان با دیگر کوروتین‌ها کار می‌کند و Deferred بازگشت می‌دهد که یک job با مقدار بازگشتی است.
+
+
+خروجی به صورت زیر خواهد بود:
+
+
+ا Exception Handling in Kotlin Coroutines
+در بحث کوروتین ها ما باید مراقب exceptions نیز باشیم، و آنها را با try/catch یا با مکانیزم مدیریت خطای کوروتین CoroutineExceptionHandler مدیریت کنیم.
+
+زمانی که از بیلدر launch استفاده میکنیم، در صورتی که exception رخ دهد، بلافاصله thrown می شود. بنابراین بهتر است آن را با try/catch مدیریت کنیم.
+
+
+با این حال، در مورد async، این روش مناسب نیست. تا زمانی که await فراخوانی نشود، exception را نگه می‌دارد. بنابراین می‌توانیم فراخوانی ()await. را در داخل try/catch قرار دهیم.
+
+
+یکی دیگر از پارامترهای اختیاری CoroutineContext یک CoroutineExceptionHandler است که به ما امکان می دهد exception های نامشخص را مدیریت کنیم. ما باید یک handler تعریف کنیم و آن را به CoroutineScope پاس دهیم:
+
+
+و در نهایت اینگونه از آن استفاده کنیم:
+
+
+فراخوانی RxJava از suspend function ها
+در صورتی که از RxJava در پروژه خود استفاده کنیم یک library به نام kotlinx-coroutines-rx وجود دارد که می‌تواند RxJava را به کوروتین تبدیل کند. آن را با کد زیر ایمپورت کنید:
+
+implementation &amp;quotorg.jetbrains.kotlinx:kotlinx-coroutines-rx2:$VERSION_CODE&amp;quot
+در تصویر زیر همه constructor های کوروتین را می‌بینید:
+
+
+برای مثال اگر از Single در RxJava استفاده کنیم، ()Single.await به ما کمک می‌کند که RxJava را به suspendCancellableCoroutine تبدیل کنیم.
+
+
+همچنان که در تصویر فوق می‌بینید، ()await حالت موفق را به ()cancellableContinuation.resume و حالت شکست را به ()cancellableContinuation.resumeWithException ارسال می‌کند. در ادامه اقدام به پیاده‌سازی کد دموی خود می‌کنیم:
+
+
+خروجی به صورت زیر خواهد بود:
+
+
+کد ()fetchUserFromServer().await موجب suspend کوروتین می‌شود و تا زمانی که RxJava نتیجه را بازگشت دهد صبر می‌کند. حال سؤال این است که اگر Single در RxJava شکست بخورد و یک exception صادر شود چه می‌شود؟
+
+
+در این حالت exception در try-catch مدیریت می‌شود. خروجی به صورت زیر است:
+
+
+جمع‌بندی
+کوروتین در کاتلین بوجود آمد تا Multi-Threading را بسیار آسان کند، اما دانستن تمام concept ها در هنگام استفاده از کوروتین ها بسیار مهم است. Scope ها و Job ها به کنترل Coroutines ها از جهت cancellation کمک می کند. از CoroutineBuilder برای create کردن آسان Coroutines ها استفاده می‌شود و در نتیحه نوشتن کد Asynchronous با استفاده از suspend function ها و coroutine builder ها آسان شده است. </string>
+</resources>
