@@ -1,12 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
-package com.msa.statelearn
+package com.msa.statelearn.statecustom
 
 import android.content.ContentValues
-import android.os.Bundle
+import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,14 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -37,36 +31,39 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.msa.statelearn.statecustom.valedateNumber
-import com.msa.statelearn.ui.theme.LearnJetPackCompseTheme
 
-class MainStateActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            LearnJetPackCompseTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
 
-                    StateTextFieldTest()
-                }
-            }
+@Composable
+fun stateCustomeTest(){
+    Column(){
+
+        var count by remember { mutableStateOf(0) }
+        Button(onClick = {
+            count++
+            Log.e(TAG, "stateCustomeTest: $count", )
+        }) {
+            Text(text = "click $count" )
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun NotCustomeTest(){
+    Column(){
+
+        var count=0;
+        Button(onClick = {
+            count++
+            Log.v(ContentValues.TAG, "stateCustomeTest: $count", )
+        }) {
+            Text(text = "click $count" )
+        }
+    }
 }
 
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StateTextFieldTest(){
     var enteredValue by remember {
@@ -84,13 +81,13 @@ fun StateTextFieldTest(){
     ){
         TextField(
             value =enteredValue ,
-            onValueChange = { text ->enteredValue =text},
-            label = { Text(text = "Age")},
-            placeholder = { Text(text = "Enter Your Age")},
+            onValueChange = {text ->enteredValue =text},
+            label = { Text(text = "Name")},
+            placeholder = { Text(text = "Enter Your Name")},
             leadingIcon = {
                 Icon(
-                    painter = rememberVectorPainter(image = Icons.Rounded.DateRange),
-                    contentDescription = "Age"
+                    painter = rememberVectorPainter(image = Icons.Rounded.Email),
+                    contentDescription = "Email"
                 )
             },
             isError = validateTextUser,
@@ -115,10 +112,14 @@ fun StateTextFieldTest(){
     }
 }
 
-@Preview(showBackground = true)
+
+
+fun  valedateNumber(inputText:String):Boolean{
+    return inputText.toInt() > 18
+}
+
 @Composable
-fun GreetingPreview() {
-    LearnJetPackCompseTheme {
-        StateTextFieldTest()
-    }
+@Preview
+fun StateTextTestPreview(){
+    StateTextFieldTest()
 }
