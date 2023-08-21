@@ -31,6 +31,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.msa.basiccomposables.components.RadioButtonGroupTest
+import com.msa.basiccomposables.components.RadioButtonTest
+import com.msa.basiccomposables.components.SwitchTest
 import com.msa.basiccomposables.ui.theme.LearnJetPackCompseTheme
 
 class MainActivityBasicComposables : ComponentActivity() {
@@ -44,7 +47,9 @@ class MainActivityBasicComposables : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                    // Greeting("Android")
-                    ButtonComponent()
+                   // ButtonComponent()
+                  //  RadioButtonGroupTest()
+                    SwitchTest()
                 }
             }
         }
@@ -101,6 +106,7 @@ fun ButtonComponent() {
 fun GreetingPreview() {
     LearnJetPackCompseTheme {
       //  Greeting("Android")
-        ButtonComponent()
+      //  RadioButtonGroupTest()
+        SwitchTest()
     }
 }
