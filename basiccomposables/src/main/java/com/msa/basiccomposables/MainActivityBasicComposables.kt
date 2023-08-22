@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.msa.basiccomposables.components.CheckBoxTest
+import com.msa.basiccomposables.components.ListCheckBoxTestPreview
 import com.msa.basiccomposables.components.RadioButtonGroupTest
 import com.msa.basiccomposables.components.RadioButtonTest
 import com.msa.basiccomposables.components.SwitchTest
@@ -49,7 +51,9 @@ class MainActivityBasicComposables : ComponentActivity() {
                    // Greeting("Android")
                    // ButtonComponent()
                   //  RadioButtonGroupTest()
-                    SwitchTest()
+                  //  SwitchTest()
+                 //  CheckBoxTest()
+                    ListCheckBoxTestPreview()
                 }
             }
         }
@@ -107,6 +111,8 @@ fun GreetingPreview() {
     LearnJetPackCompseTheme {
       //  Greeting("Android")
       //  RadioButtonGroupTest()
-        SwitchTest()
+       // SwitchTest()
+       // CheckBoxTest()
+        ListCheckBoxTestPreview()
     }
 }
