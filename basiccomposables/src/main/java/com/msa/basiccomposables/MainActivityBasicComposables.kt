@@ -5,10 +5,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +22,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,11 +39,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msa.basiccomposables.components.CheckBoxTest
+import com.msa.basiccomposables.components.CircularProgressTest
+import com.msa.basiccomposables.components.CustomCircularProgressIndicator
 import com.msa.basiccomposables.components.ListCheckBoxTestPreview
 import com.msa.basiccomposables.components.RadioButtonGroupTest
 import com.msa.basiccomposables.components.RadioButtonTest
 import com.msa.basiccomposables.components.SwitchTest
 import com.msa.basiccomposables.ui.theme.LearnJetPackCompseTheme
+import com.msa.basiccomposables.ui.theme.darkGray
+import com.msa.basiccomposables.ui.theme.gray
+import com.msa.basiccomposables.ui.theme.orange
 
 class MainActivityBasicComposables : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,12 +60,39 @@ class MainActivityBasicComposables : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   // Greeting("Android")
-                   // ButtonComponent()
-                  //  RadioButtonGroupTest()
-                  //  SwitchTest()
-                 //  CheckBoxTest()
-                    ListCheckBoxTestPreview()
+                    // Greeting("Android")
+                    // ButtonComponent()
+                    //  RadioButtonGroupTest()
+                    //  SwitchTest()
+                    //  CheckBoxTest()
+                    //  ListCheckBoxTestPreview()
+                    // CircularProgressTest()
+
+                    var positionValue by remember {
+                        mutableStateOf(0)
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(darkGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        CustomCircularProgressIndicator(
+                            modifier = Modifier
+                                .size(250.dp)
+                                .background(darkGray),
+                            initialValue = positionValue,
+                            primaryColor = orange,
+                            secondaryColor = gray,
+                            circleRadius = 230f,
+                            onPositionChange = { position ->
+                                //do something with this position value
+                            }
+                        )
+                            positionValue = 50
+                    }
+
                 }
             }
         }
@@ -62,15 +101,18 @@ class MainActivityBasicComposables : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Column(modifier = Modifier
-        .padding(20.dp)
-        .background(Color.White)
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .background(Color.White)
 
     ) {
         SelectionContainer {
 
             Text(
-                modifier = Modifier.verticalScroll(state = rememberScrollState()).padding(20.dp),
+                modifier = Modifier
+                    .verticalScroll(state = rememberScrollState())
+                    .padding(20.dp),
                 text = stringResource(id = R.string.txtScroll),
                 color = Color.Blue,
                 fontFamily = FontFamily.Cursive,
@@ -82,14 +124,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         }
     }
 }
+
 @Composable
 fun ButtonComponent() {
-    val context= LocalContext.current.applicationContext
-    Column(modifier = Modifier
-        .background(Color.White)
-        .padding(10.dp),){
+    val context = LocalContext.current.applicationContext
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(10.dp),
+    ) {
         Button(
-            onClick = { Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show()},
+            onClick = { Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show() },
             shape = RoundedCornerShape(size = 10.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red
@@ -105,14 +150,41 @@ fun ButtonComponent() {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     LearnJetPackCompseTheme {
-      //  Greeting("Android")
-      //  RadioButtonGroupTest()
-       // SwitchTest()
-       // CheckBoxTest()
-        ListCheckBoxTestPreview()
+        //  Greeting("Android")
+        //  RadioButtonGroupTest()
+        // SwitchTest()
+        // CheckBoxTest()
+        // ListCheckBoxTestPreview()
+        //  CircularProgressTest()
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(darkGray),
+            contentAlignment = Alignment.Center
+        ) {
+
+
+            CustomCircularProgressIndicator(
+                modifier = Modifier
+                    .size(250.dp)
+                    .background(darkGray),
+                initialValue = 10,
+                primaryColor = orange,
+                secondaryColor = gray,
+                circleRadius = 230f,
+                onPositionChange = { position ->
+                    //do something with this position value
+                }
+            )
+
+
+
+        }
     }
 }
