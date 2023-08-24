@@ -63,7 +63,30 @@ fun CircularProgressTest(){
     }
 }
 
-
+//                    var positionValue by remember {
+//                        mutableStateOf(0)
+//                    }
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .background(darkGray),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//
+//                        CustomCircularProgressIndicator(
+//                            modifier = Modifier
+//                                .size(250.dp)
+//                                .background(darkGray),
+//                            initialValue = positionValue,
+//                            primaryColor = orange,
+//                            secondaryColor = gray,
+//                            circleRadius = 230f,
+//                            onPositionChange = { position ->
+//                                //do something with this position value
+//                            }
+//                        )
+//                            positionValue = 50
+//                    }
 
 @Composable
 fun CustomCircularProgressIndicator(

@@ -42,6 +42,7 @@ import com.msa.basiccomposables.components.CheckBoxTest
 import com.msa.basiccomposables.components.CircularProgressTest
 import com.msa.basiccomposables.components.CustomCircularProgressIndicator
 import com.msa.basiccomposables.components.ListCheckBoxTestPreview
+import com.msa.basiccomposables.components.ProgressBarCustomTest
 import com.msa.basiccomposables.components.RadioButtonGroupTest
 import com.msa.basiccomposables.components.RadioButtonTest
 import com.msa.basiccomposables.components.SwitchTest
@@ -68,30 +69,7 @@ class MainActivityBasicComposables : ComponentActivity() {
                     //  ListCheckBoxTestPreview()
                     // CircularProgressTest()
 
-                    var positionValue by remember {
-                        mutableStateOf(0)
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(darkGray),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        CustomCircularProgressIndicator(
-                            modifier = Modifier
-                                .size(250.dp)
-                                .background(darkGray),
-                            initialValue = positionValue,
-                            primaryColor = orange,
-                            secondaryColor = gray,
-                            circleRadius = 230f,
-                            onPositionChange = { position ->
-                                //do something with this position value
-                            }
-                        )
-                            positionValue = 50
-                    }
+                    ProgressBarCustomTest()
 
                 }
             }
@@ -162,29 +140,8 @@ fun GreetingPreview() {
         // ListCheckBoxTestPreview()
         //  CircularProgressTest()
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(darkGray),
-            contentAlignment = Alignment.Center
-        ) {
+        ProgressBarCustomTest()
 
 
-            CustomCircularProgressIndicator(
-                modifier = Modifier
-                    .size(250.dp)
-                    .background(darkGray),
-                initialValue = 10,
-                primaryColor = orange,
-                secondaryColor = gray,
-                circleRadius = 230f,
-                onPositionChange = { position ->
-                    //do something with this position value
-                }
-            )
-
-
-
-        }
     }
 }
