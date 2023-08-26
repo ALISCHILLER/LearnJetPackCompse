@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msa.basiccomposables.components.CheckBoxTest
+import com.msa.basiccomposables.components.CircularProgressButton
 import com.msa.basiccomposables.components.CircularProgressTest
 import com.msa.basiccomposables.components.CustomCircularProgressIndicator
 import com.msa.basiccomposables.components.ListCheckBoxTestPreview
@@ -69,8 +70,36 @@ class MainActivityBasicComposables : ComponentActivity() {
                     //  ListCheckBoxTestPreview()
                     // CircularProgressTest()
 
-                    ProgressBarCustomTest()
+//                    var positionValue by remember {
+//                        mutableStateOf(0)
+//                    }
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .background(darkGray),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//
+//                        CustomCircularProgressIndicator(
+//                            modifier = Modifier
+//                                .size(250.dp)
+//                                .background(darkGray),
+//                            initialValue = positionValue,
+//                            primaryColor = orange,
+//                            secondaryColor = gray,
+//                            circleRadius = 230f,
+//                            onPositionChange = { position ->
+//                                //do something with this position value
+//                            }
+//                        )
+//                            positionValue = 50
+//                    }
+//
+//
+//
+//                    ProgressBarCustomTest()
 
+                    CircularProgressButton()
                 }
             }
         }

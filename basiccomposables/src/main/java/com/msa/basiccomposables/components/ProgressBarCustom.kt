@@ -142,9 +142,9 @@ fun ProgressBarCustomTest() {
     }
 
     //    Use this when you want your progress bar should animate when you open your app
-//    LaunchedEffect(key1 = true) {
-//        progressCount = 7
-//    }
+    LaunchedEffect(key1 = true) {
+        progressCount = 7
+    }
 }
 
 @Composable
