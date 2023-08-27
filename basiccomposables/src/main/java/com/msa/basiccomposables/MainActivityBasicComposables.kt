@@ -5,12 +5,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,11 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -38,19 +31,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.msa.basiccomposables.components.CheckBoxTest
-import com.msa.basiccomposables.components.CircularProgressButton
-import com.msa.basiccomposables.components.CircularProgressTest
-import com.msa.basiccomposables.components.CustomCircularProgressIndicator
-import com.msa.basiccomposables.components.ListCheckBoxTestPreview
+import com.msa.basiccomposables.components.*
+import com.msa.basiccomposables.components.FloatingActionComponent
 import com.msa.basiccomposables.components.ProgressBarCustomTest
-import com.msa.basiccomposables.components.RadioButtonGroupTest
-import com.msa.basiccomposables.components.RadioButtonTest
-import com.msa.basiccomposables.components.SwitchTest
 import com.msa.basiccomposables.ui.theme.LearnJetPackCompseTheme
-import com.msa.basiccomposables.ui.theme.darkGray
-import com.msa.basiccomposables.ui.theme.gray
-import com.msa.basiccomposables.ui.theme.orange
+
 
 class MainActivityBasicComposables : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,37 +54,16 @@ class MainActivityBasicComposables : ComponentActivity() {
                     //  CheckBoxTest()
                     //  ListCheckBoxTestPreview()
                     // CircularProgressTest()
-
-//                    var positionValue by remember {
-//                        mutableStateOf(0)
-//                    }
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .background(darkGray),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//
-//                        CustomCircularProgressIndicator(
-//                            modifier = Modifier
-//                                .size(250.dp)
-//                                .background(darkGray),
-//                            initialValue = positionValue,
-//                            primaryColor = orange,
-//                            secondaryColor = gray,
-//                            circleRadius = 230f,
-//                            onPositionChange = { position ->
-//                                //do something with this position value
-//                            }
-//                        )
-//                            positionValue = 50
-//                    }
-//
-//
-//
-//                    ProgressBarCustomTest()
-
-                    CircularProgressButton()
+                    //ProgressBarCustomTest()
+                    //  CircularProgressButton()
+                    //bottomNavigationComponent()
+                    // FloatingActionComponent()
+                    // ExtendedFloatingActionComponent()
+                    //CardComponent()
+                    // RowListTest()
+                    //LazyColumnComponent()
+                   // LazyRowComponent()
+                    LazyVerticalComponent()
                 }
             }
         }
