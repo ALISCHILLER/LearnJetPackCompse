@@ -55,7 +55,10 @@ fun LazyVerticalComponent(){
 
 @Composable
 fun CreateLazyVerticalItem(value: List<String>){
-    LazyVerticalGrid(columns = GridCells.Fixed(2), content ={
+    LazyVerticalGrid(
+//        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(100.dp),
+        content ={
         items(count=value.size){ index ->
             Card(
                 elevation = CardDefaults.cardElevation(20.dp),
